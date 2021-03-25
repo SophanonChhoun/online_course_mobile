@@ -5,10 +5,10 @@ import 'package:http/http.dart' as http;
 import 'package:online_tutorial/models/course.dart';
 
 Future<CourseData> readDataUserCourse() async {
-  String url = "http://127.0.0.1:8000/api/user/courses";
+  String url = "http://192.168.1.3:8000/api/user/courses";
 
   http.Response response = await http.get(url, headers: {
-    "Auth": "f9b8c2d87bc39552bfcb07372ec1ddaf33f7be3302c26f53a5363a93cf938883"
+    "Auth": "9090517a758514b48da649dfad45f7df505732c8c549ced47d8d4f2e09adc9ac"
   });
 
   if (response.statusCode == 200) {
@@ -20,10 +20,11 @@ Future<CourseData> readDataUserCourse() async {
 }
 
 Future<CourseData> readDataAllCourse() async {
-  String url = "http://127.0.0.1:8000/api/courses";
+  String url = "http://192.168.1.3:8000/api/courses";
 
+  print("Hell");
   http.Response response = await http.get(url, headers: {
-    "Auth": "f9b8c2d87bc39552bfcb07372ec1ddaf33f7be3302c26f53a5363a93cf938883"
+    "Auth": "9090517a758514b48da649dfad45f7df505732c8c549ced47d8d4f2e09adc9ac"
   });
   print("Hello");
   if (response.statusCode == 200) {
