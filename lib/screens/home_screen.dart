@@ -1,7 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:online_tutorial/components/card_component.dart';
 import 'package:online_tutorial/models/course.dart';
 import 'package:online_tutorial/repos/course_repos.dart';
+import 'package:online_tutorial/screens/list_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -13,6 +15,8 @@ class _HomeScreenState extends State<HomeScreen> {
   List<Course> _userCourse;
   Future<CourseData> _courseData;
   List<Course> _course;
+  var scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
   void initState() {
     // TODO: implement initState
@@ -24,12 +28,156 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: scaffoldKey,
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.menu),
+          onPressed: () {
+            scaffoldKey.currentState.openDrawer();
+          },
+        ),
         backgroundColor: Colors.white,
         iconTheme: IconThemeData(color: Colors.black),
       ),
       drawer: Drawer(
-        child: ListView(),
+        child: ListView(
+          // Important: Remove any padding from the ListView.
+          padding: EdgeInsets.only(left: 30),
+          children: <Widget>[
+            SizedBox(
+              height: 200,
+            ),
+            InkWell(
+              onTap: () {},
+              child: Container(
+                decoration: BoxDecoration(
+                    border: Border(
+                  bottom: BorderSide(
+                    color: Color(0xFFD0DEFF),
+                  ),
+                )),
+                child: Container(
+                  padding: EdgeInsets.all(8),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "My courses",
+                        style: TextStyle(
+                          fontSize: 20,
+                        ),
+                      ),
+                      Icon(
+                        Icons.arrow_forward_ios_outlined,
+                        color: Color(0xFFD0DEFF),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 16,
+            ),
+            InkWell(
+              onTap: () {},
+              child: Container(
+                decoration: BoxDecoration(
+                    border: Border(
+                  bottom: BorderSide(
+                    color: Color(0xFFD0DEFF),
+                  ),
+                )),
+                child: Container(
+                  padding: EdgeInsets.all(8),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "My notes",
+                        style: TextStyle(
+                          fontSize: 20,
+                        ),
+                      ),
+                      Icon(
+                        Icons.arrow_forward_ios_outlined,
+                        color: Color(0xFFD0DEFF),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 16,
+            ),
+            InkWell(
+              onTap: () {},
+              child: Container(
+                decoration: BoxDecoration(
+                    border: Border(
+                  bottom: BorderSide(
+                    color: Color(0xFFD0DEFF),
+                  ),
+                )),
+                child: Container(
+                  padding: EdgeInsets.all(8),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Accounts",
+                        style: TextStyle(
+                          fontSize: 20,
+                        ),
+                      ),
+                      Icon(
+                        Icons.arrow_forward_ios_outlined,
+                        color: Color(0xFFD0DEFF),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 16,
+            ),
+            InkWell(
+              onTap: () {},
+              child: Container(
+                decoration: BoxDecoration(
+                    border: Border(
+                  bottom: BorderSide(
+                    color: Color(0xFFD0DEFF),
+                  ),
+                )),
+                child: Container(
+                  padding: EdgeInsets.all(8),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Settings",
+                        style: TextStyle(
+                          fontSize: 20,
+                        ),
+                      ),
+                      Icon(
+                        Icons.arrow_forward_ios_outlined,
+                        color: Color(0xFFD0DEFF),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
       body: _buildBody,
     );
@@ -41,7 +189,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return SingleChildScrollView(
       scrollDirection: Axis.vertical,
       child: Container(
-        color: Color(0xe5e5e5),
+        color: Colors.blueGrey.shade50,
         padding: EdgeInsets.only(left: 16, top: 16, bottom: 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -78,7 +226,10 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
                       InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => ListScreen()));
+                        },
                         child: Text(
                           "See all",
                           style: TextStyle(

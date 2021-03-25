@@ -8,7 +8,7 @@ Future<CourseData> readDataUserCourse() async {
   String url = "http://127.0.0.1:8000/api/user/courses";
 
   http.Response response = await http.get(url, headers: {
-    "Auth": "0ff34049c87258dabeb1ce776da717df75d3f434443ecbd4678d0222bf0537ed"
+    "Auth": "f9b8c2d87bc39552bfcb07372ec1ddaf33f7be3302c26f53a5363a93cf938883"
   });
 
   if (response.statusCode == 200) {
@@ -23,7 +23,7 @@ Future<CourseData> readDataAllCourse() async {
   String url = "http://127.0.0.1:8000/api/courses";
 
   http.Response response = await http.get(url, headers: {
-    "Auth": "0ff34049c87258dabeb1ce776da717df75d3f434443ecbd4678d0222bf0537ed"
+    "Auth": "f9b8c2d87bc39552bfcb07372ec1ddaf33f7be3302c26f53a5363a93cf938883"
   });
   print("Hello");
   if (response.statusCode == 200) {
