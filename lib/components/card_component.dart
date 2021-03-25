@@ -70,7 +70,6 @@ class _CardComponentState extends State<CardComponent> {
                       height: 5,
                     ),
                     Container(
-                      margin: EdgeInsets.only(left: 10),
                       child: Center(
                         child: Text(
                             "${widget.duration} | ${widget.lesson} Lessons"),
