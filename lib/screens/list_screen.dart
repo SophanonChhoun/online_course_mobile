@@ -3,6 +3,7 @@ import 'package:online_tutorial/components/card_component.dart';
 import 'package:online_tutorial/models/category.dart';
 import 'package:online_tutorial/models/course.dart';
 import 'package:online_tutorial/repos/category_repos.dart';
+import 'package:online_tutorial/screens/search_screen.dart';
 
 class ListScreen extends StatefulWidget {
   @override
@@ -19,7 +20,6 @@ class _ListScreenState extends State<ListScreen> {
     // TODO: implement initState
     super.initState();
     _data = readDataCategory();
-    print(_data);
   }
 
   @override
@@ -31,47 +31,55 @@ class _ListScreenState extends State<ListScreen> {
   }
 
   get _buildBody {
-    return SafeArea(
-      child: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        child: Container(
-          padding: EdgeInsets.all(8),
-          color: Colors.blueGrey.shade50,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  IconButton(
-                    icon: Icon(
-                      Icons.arrow_back,
-                      size: 30,
+    return RefreshIndicator(
+      onRefresh: () async {
+        setState(() {
+          _data = readDataCategory();
+        });
+      },
+      child: SafeArea(
+        child: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: Container(
+            padding: EdgeInsets.all(8),
+            color: Colors.blueGrey.shade50,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    IconButton(
+                      icon: Icon(
+                        Icons.arrow_back,
+                        size: 30,
+                      ),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
                     ),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                  ),
-                  IconButton(
-                    icon: Icon(
-                      Icons.search,
-                      size: 30,
-                    ),
-                    onPressed: () {},
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Container(
-                padding: EdgeInsets.only(
-                  left: 16,
+                    IconButton(
+                        icon: Icon(
+                          Icons.search,
+                          size: 30,
+                        ),
+                        onPressed: () {
+                          showSearch(context: context, delegate: DataSearch());
+                        }),
+                  ],
                 ),
-                child: _buildView(),
-              ),
-            ],
+                SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  padding: EdgeInsets.only(
+                    left: 16,
+                  ),
+                  child: _buildView(),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -93,7 +101,7 @@ class _ListScreenState extends State<ListScreen> {
           print(_categories[0].name);
           return _buildCategory();
         } else {
-          return CircularProgressIndicator();
+          return Center(child: CircularProgressIndicator());
         }
       },
     );

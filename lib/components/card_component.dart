@@ -31,7 +31,7 @@ class _CardComponentState extends State<CardComponent> {
           side: BorderSide(color: Colors.white70, width: 1),
           borderRadius: BorderRadius.circular(5),
         ),
-        elevation: 2,
+        elevation: 5,
         child: Container(
           width: widget.width,
           height: widget.height,
