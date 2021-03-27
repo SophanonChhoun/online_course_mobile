@@ -6,8 +6,6 @@ import 'api_repository.dart';
 
 class CategoryRepo extends ApiRepository {
   Future<CategoryData> readDataCategory() async {
-    String url = "http://127.0.0.1:8000/api/category";
-
     http.Response response =
         await http.get("$baseUrl/category", headers: await getTokenHeader());
 
@@ -20,8 +18,6 @@ class CategoryRepo extends ApiRepository {
   }
 
   Future<CourseData> readDataRecentCourse() async {
-    String url = "http://127.0.0.1:8000/api/search/all";
-
     http.Response response =
         await http.get("$baseUrl/search/all", headers: await getTokenHeader());
 
@@ -34,8 +30,6 @@ class CategoryRepo extends ApiRepository {
   }
 
   Future<CourseData> readDataSearchCourse(search) async {
-    String url = "http://127.0.0.1:8000/api/search";
-
     http.Response response = await http
         .post("$baseUrl/search", headers: await getTokenHeader(), body: {
       "search": search,

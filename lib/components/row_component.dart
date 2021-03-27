@@ -47,24 +47,21 @@ class _RowComponentState extends State<RowComponent> {
           children: <Widget>[
             Text(
               widget.title,
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
+              style: Theme.of(context).textTheme.headline1,
             ),
             SizedBox(
               height: 8,
             ),
             Text(
               "${widget.author.firstName} ${widget.author.lastName}",
-              style: TextStyle(fontSize: 18),
+              style: Theme.of(context).textTheme.bodyText1,
             ),
             SizedBox(
               height: 8,
             ),
             Text(
               "${widget.duration} | ${widget.lesson} Lessons",
-              style: TextStyle(fontSize: 18),
+              style: Theme.of(context).textTheme.bodyText1,
             ),
           ],
         ),

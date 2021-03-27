@@ -60,10 +60,7 @@ class _CardComponentState extends State<CardComponent> {
                     Center(
                       child: Text(
                         widget.title,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                        ),
+                        style: Theme.of(context).textTheme.headline4,
                       ),
                     ),
                     SizedBox(
@@ -72,7 +69,9 @@ class _CardComponentState extends State<CardComponent> {
                     Container(
                       child: Center(
                         child: Text(
-                            "${widget.duration} | ${widget.lesson} Lessons"),
+                          "${widget.duration} | ${widget.lesson} Lessons",
+                          style: Theme.of(context).textTheme.caption,
+                        ),
                       ),
                     ),
                   ],

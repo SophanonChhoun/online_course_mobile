@@ -4,6 +4,8 @@ import 'package:online_tutorial/models/course.dart';
 import 'package:online_tutorial/repos/category_repos.dart';
 import 'package:online_tutorial/repos/course_repos.dart';
 
+import 'coursedetail.dart';
+
 class DataSearch extends SearchDelegate<String> {
   final statelist = [
     'Andaman and Nicobar Islands',
@@ -73,7 +75,7 @@ class DataSearch extends SearchDelegate<String> {
     print(query);
     _searchData = categoryRepo.readDataSearchCourse(query);
     // return Text("Hello");
-    return _buildResultView();
+    return _buildResultView(context);
   }
 
   @override
@@ -85,10 +87,10 @@ class DataSearch extends SearchDelegate<String> {
             .where((element) =>
                 element.toLowerCase().startsWith(query.toLowerCase()))
             .toList();
-    return _buildView();
+    return _buildView(context);
   }
 
-  _buildView() {
+  _buildView(BuildContext context) {
     return FutureBuilder<CourseData>(
       future: _data,
       builder: (context, snapshot) {
@@ -101,7 +103,7 @@ class DataSearch extends SearchDelegate<String> {
 
           _courseData = snapshot.data.data;
 
-          return _buildListView();
+          return _buildListView(context);
         } else {
           return Center(child: CircularProgressIndicator());
         }
@@ -109,7 +111,7 @@ class DataSearch extends SearchDelegate<String> {
     );
   }
 
-  _buildListView() {
+  _buildListView(BuildContext context) {
     final _searchCourse = query.isEmpty
         ? _courseData
         : _courseData
@@ -119,7 +121,13 @@ class DataSearch extends SearchDelegate<String> {
     return ListView.builder(
       itemBuilder: (context, index) => ListTile(
         onTap: () {
-          print("Hello");
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => CourseDetailScreen(
+                id: _searchCourse[index].id,
+              ),
+            ),
+          );
         },
         title: RichText(
           text: TextSpan(
@@ -139,7 +147,7 @@ class DataSearch extends SearchDelegate<String> {
     );
   }
 
-  _buildResultView() {
+  _buildResultView(BuildContext context) {
     return FutureBuilder<CourseData>(
       future: _searchData,
       builder: (context, snapshot) {
@@ -152,7 +160,7 @@ class DataSearch extends SearchDelegate<String> {
 
           _searchCourse = snapshot.data.data;
 
-          return _buildItemResult();
+          return _buildItemResult(context);
         } else {
           return Center(child: CircularProgressIndicator());
         }
@@ -160,7 +168,7 @@ class DataSearch extends SearchDelegate<String> {
     );
   }
 
-  _buildItemResult() {
+  _buildItemResult(BuildContext context) {
     return Container(
       padding: EdgeInsets.all(8),
       margin: EdgeInsets.only(top: 16),
@@ -174,6 +182,13 @@ class DataSearch extends SearchDelegate<String> {
               children: [
                 InkWell(
                   onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => CourseDetailScreen(
+                          id: _searchCourse[index].id,
+                        ),
+                      ),
+                    );
                     print(_searchCourse[index].title);
                   },
                   child: RowComponent(
