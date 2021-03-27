@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:online_tutorial/repos/auth.dart';
 
 class DrawerComponent extends StatefulWidget {
   @override
@@ -6,6 +7,7 @@ class DrawerComponent extends StatefulWidget {
 }
 
 class _DrawerComponentState extends State<DrawerComponent> {
+  AuthRepo authRepo = new AuthRepo();
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -116,7 +118,9 @@ class _DrawerComponentState extends State<DrawerComponent> {
             height: 16,
           ),
           InkWell(
-            onTap: () {},
+            onTap: () {
+              authRepo.signOut();
+            },
             child: Container(
               decoration: BoxDecoration(
                   border: Border(

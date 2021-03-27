@@ -3,6 +3,7 @@ import 'package:online_tutorial/components/card_component.dart';
 import 'package:online_tutorial/models/category.dart';
 import 'package:online_tutorial/models/course.dart';
 import 'package:online_tutorial/repos/category_repos.dart';
+import 'package:online_tutorial/repos/course_repos.dart';
 import 'package:online_tutorial/screens/search_screen.dart';
 
 class ListScreen extends StatefulWidget {
@@ -14,12 +15,13 @@ class _ListScreenState extends State<ListScreen> {
   Future<CategoryData> _data;
   List<Category> _categories;
   Course _courses;
+  CategoryRepo categoryRepo = new CategoryRepo();
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _data = readDataCategory();
+    _data = categoryRepo.readDataCategory();
   }
 
   @override
@@ -34,7 +36,7 @@ class _ListScreenState extends State<ListScreen> {
     return RefreshIndicator(
       onRefresh: () async {
         setState(() {
-          _data = readDataCategory();
+          _data = categoryRepo.readDataCategory();
         });
       },
       child: SafeArea(

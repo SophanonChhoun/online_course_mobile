@@ -40,7 +40,7 @@ class _CardComponentState extends State<CardComponent> {
             children: <Widget>[
               Container(
                 width: widget.width,
-                height: widget.height - 50,
+                height: widget.height - 70,
                 padding: EdgeInsets.only(
                   left: 10,
                   bottom: 10,

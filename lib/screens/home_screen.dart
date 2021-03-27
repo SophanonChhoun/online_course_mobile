@@ -17,13 +17,14 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<CourseData> _courseData;
   List<Course> _course;
   var scaffoldKey = GlobalKey<ScaffoldState>();
+  CourseRepo courseRepo = CourseRepo();
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _userData = readDataUserCourse();
-    _courseData = readDataAllCourse();
+    _userData = courseRepo.readDataUserCourse();
+    _courseData = courseRepo.readDataAllCourse();
   }
 
   @override
@@ -45,8 +46,8 @@ class _HomeScreenState extends State<HomeScreen> {
     return RefreshIndicator(
       onRefresh: () async {
         setState(() {
-          _userData = readDataUserCourse();
-          _courseData = readDataAllCourse();
+          _userData = courseRepo.readDataUserCourse();
+          _courseData = courseRepo.readDataAllCourse();
         });
       },
       child: SingleChildScrollView(
@@ -98,12 +99,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     Container(
                       child: buildAllCourse,
-                    )
-                    // Wrap(
-                    //   runSpacing: 20,
-                    //   spacing: 10,
-                    //   children: buildAllCourse,
-                    // ),
+                    ),
                   ],
                 ),
               )
