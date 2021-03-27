@@ -4,6 +4,7 @@ import 'package:online_tutorial/components/card_component.dart';
 import 'package:online_tutorial/components/drawer_component.dart';
 import 'package:online_tutorial/models/course.dart';
 import 'package:online_tutorial/repos/course_repos.dart';
+import 'package:online_tutorial/screens/coursedetail.dart';
 import 'package:online_tutorial/screens/list_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -53,8 +54,7 @@ class _HomeScreenState extends State<HomeScreen> {
       child: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Container(
-          color: Colors.blueGrey.shade50,
-          padding: EdgeInsets.only(left: 16, top: 16, bottom: 16),
+          padding: EdgeInsets.only(left: 24, top: 24, bottom: 24),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -66,7 +66,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 height: 20,
               ),
               Container(
-                padding: EdgeInsets.only(right: 16),
+                padding: EdgeInsets.only(right: 24),
                 child: Column(
                   children: [
                     Row(
@@ -74,10 +74,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       children: <Widget>[
                         Text(
                           "More Courses",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 33,
-                          ),
+                          style: Theme.of(context).textTheme.headline1,
                         ),
                         InkWell(
                           onTap: () {
@@ -87,8 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: Text(
                             "See all",
                             style: TextStyle(
-                              fontSize: 20,
-                              color: Colors.greenAccent,
+                              color: Colors.green,
                             ),
                           ),
                         ),
@@ -147,43 +143,55 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   buildUserCourseRow() {
-    return Row(
+    return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: List.generate(_userCourse.length, (index) {
-        return Column(
+      children: [
+        Container(
+          child: Text(
+            "${_userCourse.length > 0 ? 'Your courses' : ''}",
+            style: Theme.of(context).textTheme.headline1,
+          ),
+        ),
+        Row(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "Your courses",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 33,
-              ),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Row(
+          children: List.generate(_userCourse.length, (index) {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                InkWell(
-                  onTap: () {},
-                  child: CardComponent(
-                    width: 170,
-                    height: 240,
-                    header_img: _userCourse[index].headerImg,
-                    title: _userCourse[index].title,
-                    lesson: _userCourse[index].numberOfLessons,
-                    duration: _userCourse[index].duration,
-                  ),
-                ),
                 SizedBox(
-                  width: 5,
+                  height: 20,
+                ),
+                Row(
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => CourseDetailScreen(
+                              id: _userCourse[index].id,
+                            ),
+                          ),
+                        );
+                      },
+                      child: CardComponent(
+                        width: 170,
+                        height: 200,
+                        header_img: _userCourse[index].headerImg,
+                        title: _userCourse[index].title,
+                        lesson: _userCourse[index].numberOfLessons,
+                        duration: _userCourse[index].duration,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 5,
+                    ),
+                  ],
                 ),
               ],
-            ),
-          ],
-        );
-      }),
+            );
+          }),
+        ),
+      ],
     );
   }
 
@@ -193,10 +201,18 @@ class _HomeScreenState extends State<HomeScreen> {
       spacing: 10,
       children: List.generate(_course.length, (index) {
         return InkWell(
-          onTap: () {},
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => CourseDetailScreen(
+                  id: _course[index].id,
+                ),
+              ),
+            );
+          },
           child: CardComponent(
             width: 170,
-            height: 240,
+            height: 200,
             header_img: _course[index].headerImg,
             title: _course[index].title,
             lesson: _course[index].numberOfLessons,

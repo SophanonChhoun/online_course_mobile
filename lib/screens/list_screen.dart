@@ -4,6 +4,7 @@ import 'package:online_tutorial/models/category.dart';
 import 'package:online_tutorial/models/course.dart';
 import 'package:online_tutorial/repos/category_repos.dart';
 import 'package:online_tutorial/repos/course_repos.dart';
+import 'package:online_tutorial/screens/coursedetail.dart';
 import 'package:online_tutorial/screens/search_screen.dart';
 
 class ListScreen extends StatefulWidget {
@@ -44,7 +45,6 @@ class _ListScreenState extends State<ListScreen> {
           scrollDirection: Axis.vertical,
           child: Container(
             padding: EdgeInsets.all(8),
-            color: Colors.blueGrey.shade50,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -119,10 +119,7 @@ class _ListScreenState extends State<ListScreen> {
             children: [
               Text(
                 "${_categories[index].courses.length > 0 ? _categories[index].name : ""}",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 33,
-                ),
+                style: Theme.of(context).textTheme.headline1,
               ),
               SizedBox(
                 height: 10,
@@ -136,13 +133,24 @@ class _ListScreenState extends State<ListScreen> {
                     _courses = _categories[index].courses[indexs];
                     return Row(
                       children: [
-                        CardComponent(
-                          header_img: _courses.headerImg,
-                          width: 170,
-                          height: 240,
-                          title: _courses.title,
-                          lesson: _courses.numberOfLessons,
-                          duration: _courses.duration,
+                        InkWell(
+                          onTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => CourseDetailScreen(
+                                  id: _courses.id,
+                                ),
+                              ),
+                            );
+                          },
+                          child: CardComponent(
+                            header_img: _courses.headerImg,
+                            width: 170,
+                            height: 200,
+                            title: _courses.title,
+                            lesson: _courses.numberOfLessons,
+                            duration: _courses.duration,
+                          ),
                         ),
                         SizedBox(
                           width: 10,
