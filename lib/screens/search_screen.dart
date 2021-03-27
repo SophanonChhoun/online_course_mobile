@@ -33,9 +33,11 @@ class DataSearch extends SearchDelegate<String> {
   List<Course> _courseData;
   List<Course> _searchCourse;
   List<Course> _searchCourseData;
+  CourseRepo courseRepo = CourseRepo();
+  CategoryRepo categoryRepo = CategoryRepo();
 
   DataSearch() {
-    _data = readDataAllCourse();
+    _data = courseRepo.readDataAllCourse();
   }
 
   @override
@@ -69,7 +71,7 @@ class DataSearch extends SearchDelegate<String> {
   Widget buildResults(BuildContext context) {
     // TODO: implement buildResults
     print(query);
-    _searchData = readDataSearchCourse(query);
+    _searchData = categoryRepo.readDataSearchCourse(query);
     // return Text("Hello");
     return _buildResultView();
   }
