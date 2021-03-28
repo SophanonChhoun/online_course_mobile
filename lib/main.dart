@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:online_tutorial/screens/home_screen.dart';
 import 'package:online_tutorial/screens/sign_in_screen.dart';
+import 'package:online_tutorial/screens/test.dart';
 
 void main() {
   runApp(MyApp());
