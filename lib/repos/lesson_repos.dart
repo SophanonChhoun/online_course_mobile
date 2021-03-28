@@ -47,7 +47,6 @@ class CourseDetailRepo extends ApiRepository {
   Future<LessonData> readLessonData(id) async {
     http.Response response =
         await http.get("$baseUrl/lessons/$id", headers: await getTokenHeader());
-
     if (response.statusCode == 200) {
       String body = response.body;
       return compute(lessonDataFromMap, body);

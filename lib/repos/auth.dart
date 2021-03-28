@@ -21,22 +21,31 @@ class AuthRepo {
     }
   }
 
-  Future<AuthResponseData> signUp(
+  Future<bool> signUp(
       {String name,
       String email,
       String password,
       String passwordConfirmation}) async {
     http.Response response = await http.post("$baseUrl/register", body: {
-      'name': name,
+      'first_name': name.split(" ")[0],
+      'last_name': name.split(" ")[1],
       'email': email,
       'password': password,
       'password_confirmation': passwordConfirmation
     });
 
     if (response.statusCode == 200) {
-      return compute(authResponseDataFromMap, response.body);
+      print("Sign up successful. Computing response...");
+      AuthResponseData authResponse =
+          await compute(authResponseDataFromMap, response.body);
+      print("Saving credentials...");
+      await _saveCredentials(authResponse);
+      print("Saving credentials done");
+      return true;
     } else {
-      throw Exception("Sign up failed");
+      print("Sign up failed");
+      print(response.body);
+      return false;
     }
   }
 

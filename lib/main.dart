@@ -19,6 +19,9 @@ class MyApp extends StatelessWidget {
   final primaryBackgroundColor = Color(0xFFFFFFFF);
   final accentColor = Colors.red;
   final highlightColor = Color(0xFF02C39A);
+  final secondaryColor = Color(0xFF8e9aaf);
+  final brandColor = Color(0xFF6A00F4);
+
   final AuthRepo authRepo = new AuthRepo();
 
   @override
@@ -30,6 +33,7 @@ class MyApp extends StatelessWidget {
           backgroundColor: primaryBackgroundColor,
           accentColor: accentColor,
           highlightColor: highlightColor,
+          hintColor: captionColor,
           textTheme: TextTheme(
               headline1: GoogleFonts.poppins(
                   textStyle: TextStyle(
@@ -62,12 +66,23 @@ class MyApp extends StatelessWidget {
               bodyText2: GoogleFonts.lato(
                   textStyle: TextStyle(
                       fontSize: 14, color: primaryTextColor, height: 1.6)),
-              caption:
-                  GoogleFonts.lato(textStyle: TextStyle(fontSize: 12, color: captionColor))),
+              caption: GoogleFonts.lato(
+                  textStyle: TextStyle(fontSize: 12, color: captionColor))),
           iconTheme: IconThemeData(color: primaryColor),
           scaffoldBackgroundColor: backgroundColorDarker,
           visualDensity: VisualDensity.adaptivePlatformDensity,
-          appBarTheme: AppBarTheme(elevation: 0, iconTheme: IconThemeData(color: primaryColor))),
+          textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(primary: highlightColor)),
+          elevatedButtonTheme: ElevatedButtonThemeData(
+            style: ElevatedButton.styleFrom(
+                primary: primaryColor,
+                padding:
+                    EdgeInsets.only(left: 32, top: 16, right: 32, bottom: 16),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(32))),
+          ),
+          appBarTheme: AppBarTheme(
+              elevation: 0, iconTheme: IconThemeData(color: primaryColor))),
       debugShowCheckedModeBanner: false,
       home: FutureBuilder(
           future: authRepo.verifyExistingCredentials(),

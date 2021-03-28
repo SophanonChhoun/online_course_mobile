@@ -1,10 +1,9 @@
-import 'package:flutter/material.dart';
 import 'package:online_tutorial/repos/auth.dart';
 import 'package:online_tutorial/screens/home_screen.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:online_tutorial/screens/sign_up_screen.dart';
+import 'package:online_tutorial/screens/sign_in_screen.dart';
+import 'package:flutter/material.dart';
 
-class SignInScreen extends StatelessWidget {
+class SignUpView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,15 +15,21 @@ class SignInScreen extends StatelessWidget {
             width: MediaQuery.of(context).size.width * 0.4,
             child: Image(image: AssetImage('assets/images/flare_logo.png')),
           ),
-          SignInForm(
-            onSubmit: (email, password) {
-              AuthRepo auth = AuthRepo();
-              auth.signIn(email: email, password: password).then((success) {
-                if (success) {
+          SignUpForm(
+            onSubmit: (name, email, password, passwordConfirmation) {
+              AuthRepo authRepo = AuthRepo();
+              authRepo
+                  .signUp(
+                      name: name,
+                      email: email,
+                      password: password,
+                      passwordConfirmation: passwordConfirmation)
+                  .then((value) {
+                if (value != null) {
                   Navigator.pushReplacement(context,
                       MaterialPageRoute(builder: (context) => HomeScreen()));
                 } else {
-                  print("Invalid credentials");
+                  print("Invalid sign up credentials");
                 }
               });
             },
@@ -35,24 +40,30 @@ class SignInScreen extends StatelessWidget {
   }
 }
 
-class SignInForm extends StatefulWidget {
-  final Function(String, String) onSubmit;
+class SignUpForm extends StatefulWidget {
+  final Function(String name, String email, String password,
+      String passwordConfirmation) onSubmit;
 
-  SignInForm({this.onSubmit});
+  SignUpForm({this.onSubmit});
 
   @override
-  _SignInFormState createState() => _SignInFormState();
+  _SignUpFormState createState() => _SignUpFormState();
 }
 
-class _SignInFormState extends State<SignInForm> {
+class _SignUpFormState extends State<SignUpForm> {
+  String name;
   String email;
   String password;
+  String passwordConfirmation;
 
   final _formKey = GlobalKey<FormState>();
 
   bool _validateEmail(String email) => RegExp(
           r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
       .hasMatch(email);
+
+  bool _validatePassword(String password) =>
+      password != null && password.isNotEmpty && password.length >= 8;
 
   @override
   Widget build(BuildContext context) {
@@ -65,6 +76,13 @@ class _SignInFormState extends State<SignInForm> {
             borderRadius: _inputFieldBorderRadius,
             borderSide: BorderSide(color: Theme.of(context).hintColor)),
         hintText: hintText);
+
+    final _nameField = TextFormField(
+      onSaved: (value) {
+        name = value;
+      },
+      decoration: _inputFieldDecoration(hintText: "Name"),
+    );
 
     final _emailField = TextFormField(
       onSaved: (value) {
@@ -84,8 +102,9 @@ class _SignInFormState extends State<SignInForm> {
         password = value;
       },
       validator: (value) {
-        if (value == null || value.isEmpty) {
-          return "Please enter a password";
+        print(value);
+        if (!_validatePassword(value)) {
+          return "A valid password must have more than 8 characters";
         }
         return null;
       },
@@ -93,21 +112,35 @@ class _SignInFormState extends State<SignInForm> {
       obscureText: true,
     );
 
-    final _signInButton = ElevatedButton(
+    final _confirmPasswordField = TextFormField(
+      onSaved: (value) {
+        passwordConfirmation = value;
+      },
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return "Please enter a password confirmation";
+        }
+        return null;
+      },
+      decoration: _inputFieldDecoration(hintText: "Password confirmation"),
+      obscureText: true,
+    );
+
+    final _signUpButton = ElevatedButton(
         onPressed: () {
           if (_formKey.currentState.validate()) {
             _formKey.currentState.save();
-            this.widget.onSubmit(email, password);
+            this.widget.onSubmit(name, email, password, passwordConfirmation);
           }
         },
-        child: Text("Sign In"));
+        child: Text("Sign Up"));
 
-    final _signUpInvitation = TextButton(
+    final _signInInvitation = TextButton(
       onPressed: () {
         Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => SignUpView()));
+            context, MaterialPageRoute(builder: (context) => SignInScreen()));
       },
-      child: Text("Don't have an account? Sign Up"),
+      child: Text("Already have an account? Sign In"),
       style: TextButton.styleFrom(
         padding: EdgeInsets.all(0),
       ),
@@ -119,12 +152,16 @@ class _SignInFormState extends State<SignInForm> {
           padding: EdgeInsets.all(24),
           child: Column(
             children: <Widget>[
+              _nameField,
+              SizedBox(height: 8),
               _emailField,
               SizedBox(height: 8),
               _passwordField,
+              SizedBox(height: 8),
+              _confirmPasswordField,
               SizedBox(height: 16),
-              _signInButton,
-              _signUpInvitation
+              _signUpButton,
+              _signInInvitation
             ],
           ),
         ));

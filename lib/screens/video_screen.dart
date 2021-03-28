@@ -9,7 +9,8 @@ import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class VideoContent extends StatefulWidget {
   final int videoid;
-  VideoContent({this.videoid});
+  final String title;
+  VideoContent({this.videoid, this.title});
 
   @override
   _VideoContentState createState() => _VideoContentState();
@@ -44,8 +45,8 @@ class _VideoContentState extends State<VideoContent> {
           //size: 24,
           icon: Icon(Icons.arrow_back),
         ),
-        title: const Text(
-          'Welcome Come To the lesson',
+        title: Text(
+          widget.title ?? "",
           style: TextStyle(
             color: Colors.black,
           ),
@@ -76,8 +77,7 @@ class _VideoContentState extends State<VideoContent> {
 
   _buildView() {
     String videoId;
-    videoId = YoutubePlayer.convertUrlToId(
-        lesson.videoUrl ?? "https://www.youtube.com/watch?v=mkTrbmr9TOg");
+    videoId = YoutubePlayer.convertUrlToId(lesson.videoUrl);
     print(videoId); // BBAyRBTfsOU
     _controller = YoutubePlayerController(
       initialVideoId: videoId,
