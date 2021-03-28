@@ -117,7 +117,11 @@ class _HomeScreenState extends State<HomeScreen> {
           // print(snapshot.data.success);
           // print(snapshot.data.data[0].title);
           _userCourse = snapshot.data.data;
-          return buildUserCourseRow();
+          if (_userCourse.length > 0) {
+            return buildUserCourseRow();
+          } else {
+            return Text("");
+          }
         } else {
           return Center(child: CircularProgressIndicator());
         }

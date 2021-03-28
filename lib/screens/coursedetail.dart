@@ -5,6 +5,7 @@ import 'package:online_tutorial/models/lesson.dart';
 import 'package:online_tutorial/repos/course_repos.dart';
 import 'package:online_tutorial/repos/lesson_repos.dart';
 import 'package:online_tutorial/screens/home_screen.dart';
+import 'package:online_tutorial/screens/text_lesson.dart';
 import 'package:online_tutorial/screens/video_screen.dart';
 
 class CourseDetailScreen extends StatefulWidget {
@@ -24,7 +25,6 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
     // TODO: implement initState
     super.initState();
     _courseData = courseRepo.readDataCourseDetail(widget.id);
-    print(_courseData);
   }
 
   @override
@@ -178,10 +178,6 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 24),
       decoration: BoxDecoration(
-        //color: Color(0xFFebf1ff),
-        //color: Color(0xFFd0deff),
-        //color: Color(0xFFe0eaff),
-        //color: Colors.grey,
         color: Colors.white,
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(25.0),
@@ -219,13 +215,25 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
                     children: [
                       InkWell(
                         onTap: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => VideoContent(
-                                videoid: lesson.id,
+                          if (lesson.videoUrl == null) {
+                            print("NUll");
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => TextLessonView(
+                                  lessonId: lesson.id,
+                                  lessonTitle: lesson.title,
+                                ),
                               ),
-                            ),
-                          );
+                            );
+                          } else {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => VideoContent(
+                                  videoid: lesson.id,
+                                ),
+                              ),
+                            );
+                          }
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
