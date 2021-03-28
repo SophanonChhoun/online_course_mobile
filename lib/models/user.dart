@@ -1,33 +1,49 @@
 import 'dart:convert';
 
-User userFromJson(String str) => User.fromJson(json.decode(str));
+UserData userDataFromMap(String str) => UserData.fromMap(json.decode(str));
 
-String userToJson(User data) => json.encode(data.toJson());
+String userDataToMap(UserData data) => json.encode(data.toMap());
+
+class UserData {
+  UserData({
+    this.success,
+    this.data,
+  });
+
+  bool success;
+  User data;
+
+  factory UserData.fromMap(Map<String, dynamic> json) => UserData(
+        success: json["success"] == null ? null : json["success"],
+        data: json["data"] == null ? null : User.fromMap(json["data"]),
+      );
+
+  Map<String, dynamic> toMap() => {
+        "success": success == null ? null : success,
+        "data": data == null ? null : data.toMap(),
+      };
+}
 
 class User {
   User({
-    this.id,
-    this.first_name,
-    this.last_name,
+    this.firstName,
+    this.lastName,
     this.email,
   });
 
-  int id;
-  String first_name;
-  String last_name;
+  String firstName;
+  String lastName;
   String email;
 
-  factory User.fromJson(Map<String, dynamic> json) => User(
-        id: json["id"],
-        first_name: json["first_name"],
-        last_name: json["last_name"],
-        email: json["email"],
+  factory User.fromMap(Map<String, dynamic> json) => User(
+        firstName: json["first_name"] == null ? null : json["first_name"],
+        lastName: json["last_name"] == null ? null : json["last_name"],
+        email: json["email"] == null ? null : json["email"],
       );
 
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "first_name": first_name,
-        "last_name": last_name,
-        "email": email,
+  Map<String, dynamic> toMap() => {
+        "first_name": firstName == null ? null : firstName,
+        "last_name": lastName == null ? null : lastName,
+        "email": email == null ? null : email,
       };
 }

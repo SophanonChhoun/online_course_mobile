@@ -112,6 +112,9 @@ class _HomeScreenState extends State<HomeScreen> {
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           print("snapshot.error: ${snapshot.error}");
+          return Center(
+            child: Text("Error please try again"),
+          );
         }
         if (snapshot.connectionState == ConnectionState.done) {
           // print(snapshot.data.success);

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:online_tutorial/repos/auth.dart';
+import 'package:online_tutorial/screens/profileinfo/profile_info.dart';
 
 class DrawerComponent extends StatefulWidget {
   @override
@@ -75,7 +76,7 @@ class _DrawerComponentState extends State<DrawerComponent> {
                     Icon(
                       Icons.arrow_forward_ios_outlined,
                       color: Color(0xFFD0DEFF),
-                    )
+                    ),
                   ],
                 ),
               ),
@@ -85,7 +86,15 @@ class _DrawerComponentState extends State<DrawerComponent> {
             height: 16,
           ),
           InkWell(
-            onTap: () {},
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) {
+                    return ProfileInfo();
+                  },
+                ),
+              );
+            },
             child: Container(
               decoration: BoxDecoration(
                   border: Border(
@@ -143,7 +152,7 @@ class _DrawerComponentState extends State<DrawerComponent> {
                     Icon(
                       Icons.arrow_forward_ios_outlined,
                       color: Color(0xFFD0DEFF),
-                    )
+                    ),
                   ],
                 ),
               ),
