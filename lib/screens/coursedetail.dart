@@ -5,6 +5,7 @@ import 'package:online_tutorial/models/lesson.dart';
 import 'package:online_tutorial/repos/course_repos.dart';
 import 'package:online_tutorial/repos/lesson_repos.dart';
 import 'package:online_tutorial/screens/home_screen.dart';
+import 'package:online_tutorial/screens/video_screen.dart';
 
 class CourseDetailScreen extends StatefulWidget {
   final int id;
@@ -216,55 +217,66 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
                   Lesson lesson = _course.lessons[index];
                   return Column(
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Icon(
-                            lesson.videoUrl != null
-                                ? Icons.movie_creation
-                                : Icons.article,
-                            color: Colors.grey,
-                            size: 32.0,
-                          ),
-                          SizedBox(
-                            width: 8,
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Container(
-                                width: 300,
-                                child: Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    "${lesson.duration}mn",
-                                    style: TextStyle(
-                                      color: Colors.grey,
+                      InkWell(
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => VideoContent(
+                                videoid: lesson.id,
+                              ),
+                            ),
+                          );
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Icon(
+                              lesson.videoUrl != null
+                                  ? Icons.movie_creation
+                                  : Icons.article,
+                              color: Colors.grey,
+                              size: 32.0,
+                            ),
+                            SizedBox(
+                              width: 8,
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Container(
+                                  width: 300,
+                                  child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      "${lesson.duration}mn",
+                                      style: TextStyle(
+                                        color: Colors.grey,
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                              Container(
-                                width: 300,
-                                child: Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    lesson.title,
-                                    style: TextStyle(
-                                        fontSize: 16.0,
-                                        fontWeight: FontWeight.bold),
+                                Container(
+                                  width: 300,
+                                  child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      lesson.title,
+                                      style: TextStyle(
+                                          fontSize: 16.0,
+                                          fontWeight: FontWeight.bold),
+                                    ),
                                   ),
-                                ),
-                              )
-                            ],
-                          ),
-                          Text(
-                            "${index + 1}",
-                            style: Theme.of(context).textTheme.caption,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ],
+                                )
+                              ],
+                            ),
+                            Text(
+                              "${index + 1}",
+                              style: Theme.of(context).textTheme.caption,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ],
+                        ),
                       ),
                       SizedBox(
                         height: 24,
