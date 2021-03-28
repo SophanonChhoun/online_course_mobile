@@ -1,5 +1,7 @@
 import 'package:online_tutorial/repos/auth.dart';
 import 'package:online_tutorial/screens/home_screen.dart';
+import 'package:online_tutorial/screens/profileinfo/edit_name.dart';
+import 'file:///A:/NIPTICT/Flutter%20Implement/Implement%20With%20Angela/Final%20Mobile%20Project/non/online_course_mobile/lib/screens/profileinfo/profile_info.dart';
 import 'package:online_tutorial/screens/sign_in_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -75,7 +77,7 @@ class MyApp extends StatelessWidget {
               return Text("Error loading app");
             }
             if (snapshot.connectionState == ConnectionState.done) {
-              return snapshot.data ? HomeScreen() : SignInScreen();
+              return snapshot.data ? HomeScreen() : ProfileInfo();
             } else {
               return CircularProgressIndicator();
             }
