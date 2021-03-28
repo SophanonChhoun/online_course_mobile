@@ -211,7 +211,7 @@ class _HomeScreenState extends State<HomeScreen> {
             );
           },
           child: CardComponent(
-            width: 170,
+            width: 150,
             height: 200,
             header_img: _course[index].headerImg,
             title: _course[index].title,

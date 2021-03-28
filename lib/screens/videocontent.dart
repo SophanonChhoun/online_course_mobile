@@ -4,10 +4,15 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:online_tutorial/models/lesson.dart';
+import 'package:online_tutorial/models/lesssondata.dart';
+import 'package:online_tutorial/repos/lesson_repos.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 //import 'file:///A:/Flutter%20Test/youtubevideo/lib/screens/coursedetail.dart';
 
 class VideoContent extends StatefulWidget {
+  final int videoid;
+  VideoContent({this.videoid});
+
   @override
   _VideoContentState createState() => _VideoContentState();
 }
@@ -30,11 +35,15 @@ VideoContentDetail selectDetail;
 
 class _VideoContentState extends State<VideoContent> {
   YoutubePlayerController _controller;
-
+  Future<LessonData> _lessonData;
+  Lesson lesson;
+  CourseDetailRepo _lessonDataDatail = CourseDetailRepo();
   @override
   void initState() {
-    String URLID = CutURI("https://youtu.be/mkTrbmr9TOg");
+    String URLID = CutURI("https://youtu.be/nJDHxHccYAo");
     super.initState();
+    _lessonData = _lessonDataDatail.ReadLessonData(widget.videoid);
+    print(_lessonData);
     _controller = YoutubePlayerController(
       initialVideoId: URLID, //tcodrIK2P_I
       params: const YoutubePlayerParams(
@@ -79,8 +88,7 @@ class _VideoContentState extends State<VideoContent> {
           leading: IconButton(
             onPressed: () {
               print("Back Pressed");
-              // Navigator.of(context).push(
-              //     MaterialPageRoute(builder: (context) => CourseDetail()));
+              Navigator.pop(context);
             },
             color: Colors.black,
             //size: 24,
@@ -93,39 +101,62 @@ class _VideoContentState extends State<VideoContent> {
             ),
           ),
         ),
-        body: Column(
-          children: [
-            Expanded(
-              flex: 1,
-              child: LayoutBuilder(
-                builder: (context, constraints) {
-                  if (kIsWeb && constraints.maxWidth > 800) {
-                    return Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Expanded(child: player),
-                        const SizedBox(
-                          width: 500,
-                          child: SingleChildScrollView(
-                              //child: Controls(),
-                              ),
-                        ),
-                      ],
-                    );
-                  }
-                  return ListView(
-                    children: [
-                      player,
-                      //const Controls(),
-                    ],
-                  );
-                },
-              ),
-            ),
-            Expanded(flex: 2, child: _buildOverviewContentContainer(context)),
-          ],
-        ),
+        body: _buildBody(),
       ),
+    );
+  }
+
+  _buildBody() {
+    return FutureBuilder<LessonData>(
+      future: _lessonData,
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          print("snapshot.error: ${snapshot.error}");
+          return SafeArea(child: Text("Error while reading data"));
+        }
+        if (snapshot.connectionState == ConnectionState.done) {
+          lesson = snapshot.data.data;
+          return _buildView();
+        } else {
+          return Center(child: CircularProgressIndicator());
+        }
+      },
+    );
+  }
+
+  _buildView() {
+    const player = YoutubePlayerIFrame();
+    return Column(
+      children: [
+        Expanded(
+          flex: 1,
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              if (kIsWeb && constraints.maxWidth > 800) {
+                return Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Expanded(child: player),
+                    const SizedBox(
+                      width: 500,
+                      child: SingleChildScrollView(
+                          //child: Controls(),
+                          ),
+                    ),
+                  ],
+                );
+              }
+              return ListView(
+                children: [
+                  player,
+                  //const Controls(),
+                ],
+              );
+            },
+          ),
+        ),
+        Expanded(flex: 2, child: _buildOverviewContentContainer(context)),
+      ],
     );
   }
 
@@ -219,7 +250,7 @@ class _VideoContentState extends State<VideoContent> {
 
   OverviewItem() {
     return Text(
-      'OverviewItem OverviewItem OverviewItem OverviewItem',
+      lesson.videoContent,
       textAlign: TextAlign.center,
       style: TextStyle(color: Colors.black, fontSize: 16),
     );

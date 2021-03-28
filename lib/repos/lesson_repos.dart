@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:online_tutorial/models/lesson.dart';
+import 'package:online_tutorial/models/lesssondata.dart';
 import 'package:online_tutorial/repos/api_repository.dart';
 
 class CourseDetailRepo extends ApiRepository {
@@ -40,6 +41,18 @@ class CourseDetailRepo extends ApiRepository {
       return true;
     } else {
       throw Exception("Error while writing: ${response.statusCode}");
+    }
+  }
+
+  Future<LessonData> ReadLessonData(id) async {
+    http.Response response =
+        await http.get("$baseUrl/lessons/$id", headers: await getTokenHeader());
+
+    if (response.statusCode == 200) {
+      String body = response.body;
+      return compute(lessonDataFromMap, body);
+    } else {
+      throw Exception("Error while reading data");
     }
   }
 }
