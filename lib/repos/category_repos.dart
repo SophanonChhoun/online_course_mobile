@@ -17,6 +17,18 @@ class CategoryRepo extends ApiRepository {
     }
   }
 
+  Future<CategoryData> readDataUserCategory() async {
+    http.Response response = await http.get("$baseUrl/user/category",
+        headers: await getTokenHeader());
+
+    if (response.statusCode == 200) {
+      String body = response.body;
+      return compute(categoryDataFromJson, body);
+    } else {
+      throw Exception("Error while reading data");
+    }
+  }
+
   Future<CourseData> readDataRecentCourse() async {
     http.Response response =
         await http.get("$baseUrl/search/all", headers: await getTokenHeader());
