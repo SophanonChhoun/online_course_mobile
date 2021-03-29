@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:online_tutorial/repos/auth.dart';
 import 'package:online_tutorial/screens/profileinfo/profile_info.dart';
+import 'package:online_tutorial/screens/sign_in_screen.dart';
+import 'package:online_tutorial/screens/user_course_screen.dart';
 
 class DrawerComponent extends StatefulWidget {
   @override
@@ -20,7 +22,10 @@ class _DrawerComponentState extends State<DrawerComponent> {
             height: 200,
           ),
           InkWell(
-            onTap: () {},
+            onTap: () {
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (context) => UserCourse()));
+            },
             child: Container(
               decoration: BoxDecoration(
                   border: Border(
@@ -129,6 +134,8 @@ class _DrawerComponentState extends State<DrawerComponent> {
           InkWell(
             onTap: () {
               authRepo.signOut();
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => SignInScreen()));
             },
             child: Container(
               decoration: BoxDecoration(
@@ -144,7 +151,7 @@ class _DrawerComponentState extends State<DrawerComponent> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "Settings",
+                      "Log Out",
                       style: TextStyle(
                         fontSize: 20,
                       ),
