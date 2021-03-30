@@ -189,6 +189,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
   }
 
   _buildListView() {
+    var size = MediaQuery.of(context).size;
     return Column(
       children: [
         SizedBox(
@@ -254,7 +255,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 Container(
-                                  width: 300,
+                                  width: size.width - 150,
                                   child: Align(
                                     alignment: Alignment.centerLeft,
                                     child: Text(
