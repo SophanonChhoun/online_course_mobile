@@ -27,8 +27,8 @@ class AuthRepo {
       String password,
       String passwordConfirmation}) async {
     http.Response response = await http.post("$baseUrl/register", body: {
-      'first_name': name.split(" ")[0],
-      'last_name': name.split(" ")[1],
+      'first_name': name.split(" ")[0] ?? null,
+      'last_name': name.split(" ")[1] ?? null,
       'email': email,
       'password': password,
       'password_confirmation': passwordConfirmation

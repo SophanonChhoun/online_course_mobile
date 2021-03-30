@@ -4,8 +4,12 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:online_tutorial/components/flare_markdown_style.dart';
 import 'package:online_tutorial/models/lesson.dart';
 import 'package:online_tutorial/models/lessondata.dart';
+import 'package:online_tutorial/models/note.dart';
 import 'package:online_tutorial/repos/lesson_repos.dart';
+import 'package:online_tutorial/repos/note_repose.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+
+import 'note_screen.dart';
 
 class VideoContent extends StatefulWidget {
   final int videoid;
@@ -24,11 +28,22 @@ class _VideoContentState extends State<VideoContent> {
   Lesson lesson;
   CourseDetailRepo _lessonDataDatail = CourseDetailRepo();
   Future<LessonData> _lessonData;
+  final noteRepo = NoteRepo();
+  NoteData attachedNote;
 
   @override
   void initState() {
     super.initState();
     _lessonData = _lessonDataDatail.readLessonData(widget.videoid);
+    preFetchNote();
+  }
+
+  preFetchNote() {
+    attachedNote = null;
+    noteRepo.getByLessonId(widget.videoid).then((note) {
+      print("Pre-fetched note for lessons/${widget.videoid}");
+      attachedNote = note;
+    });
   }
 
   @override
@@ -46,11 +61,21 @@ class _VideoContentState extends State<VideoContent> {
           icon: Icon(Icons.arrow_back),
         ),
         title: Text(
-          widget.title ?? "",
-          style: TextStyle(
-            color: Colors.black,
-          ),
+          widget.title,
+          style: Theme.of(context).textTheme.headline2,
         ),
+        actions: [
+          TextButton(
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => NoteView(
+                          lessonId: widget.videoid,
+                          preFetchedNote: attachedNote,
+                          onClose: preFetchNote,
+                        )));
+              },
+              child: Text("Notes"))
+        ],
       ),
       body: _buildBody(),
     );
@@ -118,13 +143,15 @@ class _VideoContentState extends State<VideoContent> {
             },
           ),
         ),
-        Expanded(flex: 2, child: _buildOverviewContentContainer(context)),
+        Expanded(flex: 2, child: _buildOverviewContentContainer()),
       ],
     );
   }
 
-  _buildOverviewContentContainer(context) {
+  _buildOverviewContentContainer() {
+    var size = MediaQuery.of(context).size;
     return Container(
+      width: size.width,
       margin: EdgeInsets.only(top: 12),
       decoration: BoxDecoration(
         //color: Color(0xFFebf1ff),
@@ -137,46 +164,23 @@ class _VideoContentState extends State<VideoContent> {
           topRight: Radius.circular(20.0),
         ),
       ),
-      child: _buildOverviewContent(context),
+      child: _buildOverviewContent(),
       //_buildListView(context),
     );
   }
 
-  _buildOverviewContent(context) {
+  _buildOverviewContent() {
     return Column(
       children: [
         Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              InkWell(
-                onTap: showWidget,
-                child: Text(
-                  "Overview",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16.0,
-                    color: selectDetail == VideoContentDetail.overview
-                        ? Colors.black
-                        : Colors.grey,
-                  ),
-                ),
-              ),
-              InkWell(
-                onTap: hideWidget,
-                child: Text(
-                  "Note",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16.0,
-                    color: selectDetail == VideoContentDetail.note
-                        ? Colors.black
-                        : Colors.grey,
-                  ),
-                ),
-              ),
-            ],
+          child: Text(
+            "Overview",
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 16.0,
+              color: Colors.grey,
+            ),
           ),
         ),
         Container(
@@ -188,24 +192,9 @@ class _VideoContentState extends State<VideoContent> {
             borderRadius: BorderRadius.circular(20),
           ),
         ),
-        Visibility(
-          maintainSize: true,
-          maintainAnimation: true,
-          maintainState: true,
-          visible: viewVisible,
-          child: Container(
-            decoration: BoxDecoration(
-              color: Color(0xFFe3ecff),
-              //color: Colors.grey,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(20.0),
-                topRight: Radius.circular(20.0),
-              ),
-            ),
-            child: selectDetail == VideoContentDetail.overview
-                ? OverviewItem()
-                : NoteItem(),
-          ),
+        Container(
+          padding: EdgeInsets.all(8),
+          child: OverviewItem(),
         ),
       ],
     );
@@ -217,30 +206,6 @@ class _VideoContentState extends State<VideoContent> {
       textAlign: TextAlign.center,
       style: TextStyle(color: Colors.black, fontSize: 16),
     );
-  }
-
-  NoteItem() {
-    return Text(
-      'NoteItem NoteItem NoteItem',
-      textAlign: TextAlign.center,
-      style: TextStyle(color: Colors.black, fontSize: 16),
-    );
-  }
-
-  bool viewVisible = false;
-
-  void showWidget() {
-    setState(() {
-      selectDetail = VideoContentDetail.overview;
-      viewVisible = true;
-    });
-  }
-
-  void hideWidget() {
-    setState(() {
-      selectDetail = VideoContentDetail.note;
-      viewVisible = true;
-    });
   }
 
   @override

@@ -57,8 +57,7 @@ class _ProfileInfoState extends State<ProfileInfo> {
       leading: IconButton(
         onPressed: () {
           print("Back Pressed");
-          Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (context) => HomeScreen()));
+          Navigator.pop(context);
         },
         color: Colors.black,
         //size: 24,
@@ -128,7 +127,11 @@ class _ProfileInfoState extends State<ProfileInfo> {
                         firstName: user.firstName,
                         lastName: user.lastName,
                       );
-                    }));
+                    })).then((value) {
+                      setState(() {
+                        _userData = userRepo.readDataUser();
+                      });
+                    });
                   },
                   icon: Icon(Icons.edit),
                 ),
@@ -189,7 +192,11 @@ class _ProfileInfoState extends State<ProfileInfo> {
                           email: user.email,
                         );
                       }),
-                    );
+                    ).then((value) {
+                      setState(() {
+                        _userData = userRepo.readDataUser();
+                      });
+                    });
                   },
                   icon: Icon(Icons.edit),
                 ),
@@ -246,7 +253,11 @@ class _ProfileInfoState extends State<ProfileInfo> {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) {
                       return EditPassoword();
-                    }));
+                    })).then((value) {
+                      setState(() {
+                        _userData = userRepo.readDataUser();
+                      });
+                    });
                   },
                   icon: Icon(Icons.edit),
                 ),

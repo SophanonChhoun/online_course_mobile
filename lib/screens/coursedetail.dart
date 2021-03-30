@@ -230,6 +230,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
                               MaterialPageRoute(
                                 builder: (context) => VideoContent(
                                   videoid: lesson.id,
+                                  title: lesson.title,
                                 ),
                               ),
                             );
