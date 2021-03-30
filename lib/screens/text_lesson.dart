@@ -1,9 +1,12 @@
 import 'package:online_tutorial/components/flare_markdown_style.dart';
 import 'package:online_tutorial/models/lesson.dart';
 import 'package:online_tutorial/models/lessondata.dart';
+import 'package:online_tutorial/models/note.dart';
 import 'package:online_tutorial/repos/lesson_repos.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:online_tutorial/repos/note_repose.dart';
+import 'package:online_tutorial/screens/note_screen.dart';
 
 class TextLessonView extends StatefulWidget {
   final int lessonId;
@@ -18,12 +21,23 @@ class TextLessonView extends StatefulWidget {
 class _TextLessonViewState extends State<TextLessonView> {
   CourseDetailRepo _lessonDataDatail = CourseDetailRepo();
   Future<LessonData> _lessonData;
+  final noteRepo = NoteRepo();
+  NoteData attachedNote;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     _lessonData = _lessonDataDatail.readLessonData(widget.lessonId);
+    preFetchNote();
+  }
+
+  preFetchNote() {
+    attachedNote = null;
+    noteRepo.getByLessonId(widget.lessonId).then((note) {
+      print("Pre-fetched note for lessons/${widget.lessonId}");
+      attachedNote = note;
+    });
   }
 
   @override
@@ -36,6 +50,18 @@ class _TextLessonViewState extends State<TextLessonView> {
           widget.lessonTitle,
           style: Theme.of(context).textTheme.headline2,
         ),
+        actions: [
+          TextButton(
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => NoteView(
+                          lessonId: widget.lessonId,
+                          preFetchedNote: attachedNote,
+                          onClose: preFetchNote,
+                        )));
+              },
+              child: Text("Notes"))
+        ],
       ),
       body: FutureBuilder<LessonData>(
         future: _lessonData,

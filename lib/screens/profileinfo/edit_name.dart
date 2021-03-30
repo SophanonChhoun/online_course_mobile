@@ -34,8 +34,7 @@ class _NameEditState extends State<NameEdit> {
         leading: IconButton(
           onPressed: () {
             print("Back Pressed");
-            Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: (context) => ProfileInfo()));
+            Navigator.pop(context);
           },
           color: Colors.black,
           //size: 24,

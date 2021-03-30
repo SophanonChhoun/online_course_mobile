@@ -25,8 +25,7 @@ class _EditPassowordState extends State<EditPassoword> {
         leading: IconButton(
           onPressed: () {
             print("Back Pressed");
-            Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: (context) => ProfileInfo()));
+            Navigator.pop(context);
           },
           color: Colors.black,
           //size: 24,

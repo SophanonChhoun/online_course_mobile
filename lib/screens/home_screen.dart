@@ -78,8 +78,15 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         InkWell(
                           onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => ListScreen()));
+                            Navigator.of(context)
+                                .push(MaterialPageRoute(
+                                    builder: (context) => ListScreen()))
+                                .then((value) {
+                              setState(() {
+                                _userData = courseRepo.readDataUserCourse();
+                                _courseData = courseRepo.readDataAllCourse();
+                              });
+                            });
                           },
                           child: Text(
                             "See all",
@@ -172,13 +179,20 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: [
                     InkWell(
                       onTap: () {
-                        Navigator.of(context).push(
+                        Navigator.of(context)
+                            .push(
                           MaterialPageRoute(
                             builder: (context) => CourseDetailScreen(
                               id: _userCourse[index].id,
                             ),
                           ),
-                        );
+                        )
+                            .then((value) {
+                          setState(() {
+                            _userData = courseRepo.readDataUserCourse();
+                            _courseData = courseRepo.readDataAllCourse();
+                          });
+                        });
                       },
                       child: CardComponent(
                         width: 150,
@@ -209,13 +223,20 @@ class _HomeScreenState extends State<HomeScreen> {
       children: List.generate(_course.length, (index) {
         return InkWell(
           onTap: () {
-            Navigator.of(context).push(
+            Navigator.of(context)
+                .push(
               MaterialPageRoute(
                 builder: (context) => CourseDetailScreen(
                   id: _course[index].id,
                 ),
               ),
-            );
+            )
+                .then((value) {
+              setState(() {
+                _userData = courseRepo.readDataUserCourse();
+                _courseData = courseRepo.readDataAllCourse();
+              });
+            });
           },
           child: CardComponent(
             width: 150,
