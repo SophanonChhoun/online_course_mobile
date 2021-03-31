@@ -100,6 +100,8 @@ class _UserCourseState extends State<UserCourse> {
   }
 
   _buildCategory() {
+    var size = MediaQuery.of(context).size;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: List.generate(_categories.length, (index) {
@@ -135,7 +137,7 @@ class _UserCourseState extends State<UserCourse> {
                           },
                           child: CardComponent(
                             header_img: _courses.headerImg,
-                            width: 170,
+                            width: (size.width / 2) - 40,
                             height: 200,
                             title: _courses.title,
                             lesson: _courses.numberOfLessons,

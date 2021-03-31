@@ -21,6 +21,7 @@ class MyApp extends StatelessWidget {
   final highlightColor = Color(0xFF02C39A);
   final secondaryColor = Color(0xFF8e9aaf);
   final brandColor = Color(0xFF6A00F4);
+  final negativeColor = Color(0xFFef233c);
 
   final AuthRepo authRepo = new AuthRepo();
 
@@ -34,6 +35,7 @@ class MyApp extends StatelessWidget {
           accentColor: accentColor,
           highlightColor: highlightColor,
           hintColor: captionColor,
+          errorColor: negativeColor,
           textTheme: TextTheme(
               headline1: GoogleFonts.poppins(
                   textStyle: TextStyle(

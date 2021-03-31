@@ -29,7 +29,7 @@ class _CardComponentState extends State<CardComponent> {
       child: Card(
         shape: RoundedRectangleBorder(
           side: BorderSide(color: Colors.white70, width: 1),
-          borderRadius: BorderRadius.circular(5),
+          borderRadius: BorderRadius.circular(20),
         ),
         elevation: 5,
         child: Container(

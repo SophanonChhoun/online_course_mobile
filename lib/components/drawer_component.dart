@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:online_tutorial/repos/auth.dart';
+import 'package:online_tutorial/screens/my_notes.dart';
 import 'package:online_tutorial/screens/profileinfo/profile_info.dart';
 import 'package:online_tutorial/screens/sign_in_screen.dart';
 import 'package:online_tutorial/screens/user_course_screen.dart';
@@ -58,7 +59,10 @@ class _DrawerComponentState extends State<DrawerComponent> {
             height: 16,
           ),
           InkWell(
-            onTap: () {},
+            onTap: () {
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (context) => MyNotesView()));
+            },
             child: Container(
               decoration: BoxDecoration(
                   border: Border(
@@ -133,9 +137,10 @@ class _DrawerComponentState extends State<DrawerComponent> {
           ),
           InkWell(
             onTap: () {
-              authRepo.signOut();
-              Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (context) => SignInScreen()));
+              authRepo.signOut().then((value) {
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) => SignInScreen()));
+              });
             },
             child: Container(
               decoration: BoxDecoration(

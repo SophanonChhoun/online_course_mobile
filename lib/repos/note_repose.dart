@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:online_tutorial/models/note.dart';
+import 'package:online_tutorial/models/note_index.dart';
 import 'package:online_tutorial/repos/api_repository.dart';
 
 class NoteRepo extends ApiRepository {
@@ -53,6 +54,32 @@ class NoteRepo extends ApiRepository {
       print("DELETE /notes/$id successful");
     } else {
       throw Exception("DELETE /notes/$id failed");
+    }
+  }
+
+  Future<NoteIndexData> getAll() async {
+    final response =
+        await http.get("$baseUrl/notes", headers: await getTokenHeader());
+
+    if (response.statusCode == 200) {
+      print("GET /notes successful");
+      return compute(noteIndexDataFromMap, response.body);
+    } else {
+      print(response.body);
+      throw Exception("GET /notes failed");
+    }
+  }
+
+  Future<NoteData> get(int id) async {
+    final response =
+        await http.get("$baseUrl/notes/$id", headers: await getTokenHeader());
+
+    if (response.statusCode == 200) {
+      print("GET /notes/$id successful");
+      return compute(noteDataFromJson, response.body);
+    } else {
+      print(response.body);
+      throw Exception("GET /notes/$id failed");
     }
   }
 }

@@ -19,11 +19,7 @@ class SignUpView extends StatelessWidget {
             onSubmit: (name, email, password, passwordConfirmation) {
               AuthRepo authRepo = AuthRepo();
               authRepo
-                  .signUp(
-                      name: name,
-                      email: email,
-                      password: password,
-                      passwordConfirmation: passwordConfirmation)
+                  .signUp(name: name, email: email, password: password)
                   .then((value) {
                 if (value != null) {
                   Navigator.pushReplacement(context,
