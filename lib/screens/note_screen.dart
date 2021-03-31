@@ -6,12 +6,14 @@ class NoteView extends StatefulWidget {
   final int lessonId;
   final NoteData preFetchedNote;
   final bool autoFocus;
+  int noteId;
   VoidCallback onClose;
 
   NoteView(
       {this.lessonId,
       this.preFetchedNote,
       this.autoFocus = true,
+      this.noteId,
       this.onClose});
 
   @override
@@ -23,6 +25,15 @@ class _NoteViewState extends State<NoteView> {
   final _noteRepo = NoteRepo();
   NoteData initialNote;
 
+  _setInitialNote(NoteData note) {
+    initialNote = note;
+    setState(() {
+      _textFieldController.value = TextEditingValue(
+          text: note.data.content,
+          selection: TextSelection.collapsed(offset: note.data.content.length));
+    });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -33,15 +44,11 @@ class _NoteViewState extends State<NoteView> {
       _textFieldController.text =
           initialNote.data == null ? "" : initialNote.data.content;
     } else {
-      _noteRepo.getByLessonId(widget.lessonId).then((note) {
-        initialNote = note;
-        setState(() {
-          _textFieldController.value = TextEditingValue(
-              text: note.data.content,
-              selection:
-                  TextSelection.collapsed(offset: note.data.content.length));
-        });
-      });
+      if (widget.noteId != null) {
+        _noteRepo.get(widget.noteId).then(_setInitialNote);
+      } else {
+        _noteRepo.getByLessonId(widget.lessonId).then(_setInitialNote);
+      }
     }
   }
 

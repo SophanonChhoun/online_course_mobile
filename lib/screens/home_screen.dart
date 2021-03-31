@@ -33,7 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.transparent,
         iconTheme: IconThemeData(color: Colors.black),
       ),
       drawer: DrawerComponent(),
@@ -157,6 +157,8 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   buildUserCourseRow() {
+    var size = MediaQuery.of(context).size;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -195,7 +197,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         });
                       },
                       child: CardComponent(
-                        width: 150,
+                        width: (size.width / 2) - 40,
                         height: 200,
                         header_img: _userCourse[index].headerImg,
                         title: _userCourse[index].title,
@@ -217,6 +219,8 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   buildCourse() {
+    var size = MediaQuery.of(context).size;
+
     return Wrap(
       runSpacing: 20,
       spacing: 10,
@@ -239,7 +243,7 @@ class _HomeScreenState extends State<HomeScreen> {
             });
           },
           child: CardComponent(
-            width: 150,
+            width: (size.width / 2) - 40,
             height: 200,
             header_img: _course[index].headerImg,
             title: _course[index].title,

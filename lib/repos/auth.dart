@@ -49,25 +49,30 @@ class AuthRepo {
     }
   }
 
-  signOut() async {
+  Future<void> signOut() async {
     final storage = new FlutterSecureStorage();
     await storage.delete(key: 'token');
     await storage.delete(key: 'tokenExpiryDate');
+    print("Sign out done");
   }
 
   Future<bool> verifyExistingCredentials() async {
+    print("Here");
     final storage = new FlutterSecureStorage();
     String token = await storage.read(key: 'token');
     if (token == null) {
       return false;
     }
+
     DateTime tokenExpiryDate =
         DateTime.parse(await storage.read(key: 'tokenExpiryDate'));
     if (tokenExpiryDate.isBefore(DateTime.now())) {
+      print("error");
       storage.delete(key: 'token');
       storage.delete(key: 'tokenExpiryDate');
       return false;
     }
+    print("Bye");
     return true;
   }
 
