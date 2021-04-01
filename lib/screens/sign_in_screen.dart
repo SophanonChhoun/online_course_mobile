@@ -1,52 +1,47 @@
-import 'package:flutter/material.dart';
 import 'package:online_tutorial/repos/auth.dart';
+import 'package:flutter/material.dart';
 import 'package:online_tutorial/screens/home_screen.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:online_tutorial/screens/sign_up_screen.dart';
+import 'package:online_tutorial/widgets/flare_sized_circular_progress_indicator.dart';
+import 'package:online_tutorial/widgets/flare_text_form_field.dart';
 
 class SignInScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: SafeArea(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            width: MediaQuery.of(context).size.width * 0.4,
-            child: Image(image: AssetImage('assets/images/flare_logo.png')),
+      backgroundColor: Theme.of(context).backgroundColor,
+      body: SafeArea(
+        child: Center(
+          child: ListView(
+            shrinkWrap: true,
+            children: [
+              Align(
+                alignment: Alignment.center,
+                child: Container(
+                  width: MediaQuery.of(context).size.width * 0.5,
+                  child:
+                      Image(image: AssetImage('assets/images/flare_logo.png')),
+                ),
+              ),
+              SignInForm(),
+            ],
           ),
-          SignInForm(
-            onSubmit: (email, password) {
-              AuthRepo auth = AuthRepo();
-              auth.signIn(email: email, password: password).then((success) {
-                if (success) {
-                  Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context) => HomeScreen()));
-                } else {
-                  print("Invalid credentials");
-                }
-              });
-            },
-          )
-        ],
+        ),
       ),
-    ));
+    );
   }
 }
 
 class SignInForm extends StatefulWidget {
-  final Function(String, String) onSubmit;
-
-  SignInForm({this.onSubmit});
-
   @override
   _SignInFormState createState() => _SignInFormState();
 }
 
 class _SignInFormState extends State<SignInForm> {
+  final _authRepo = AuthRepo();
   String email;
   String password;
+  bool _isLoading = false;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -56,17 +51,9 @@ class _SignInFormState extends State<SignInForm> {
 
   @override
   Widget build(BuildContext context) {
-    final _inputFieldBorderRadius = BorderRadius.all(Radius.circular(8));
-
-    _inputFieldDecoration({String hintText = ""}) => InputDecoration(
-        contentPadding: EdgeInsets.only(left: 16, top: 4, right: 16, bottom: 4),
-        border: OutlineInputBorder(borderRadius: _inputFieldBorderRadius),
-        enabledBorder: OutlineInputBorder(
-            borderRadius: _inputFieldBorderRadius,
-            borderSide: BorderSide(color: Theme.of(context).hintColor)),
-        hintText: hintText);
-
-    final _emailField = TextFormField(
+    final _emailField = FlareTextFormField(
+      labelText: "Email",
+      hintText: "jamesbond@cia.com",
       onSaved: (value) {
         email = value;
       },
@@ -76,10 +63,11 @@ class _SignInFormState extends State<SignInForm> {
         }
         return null;
       },
-      decoration: _inputFieldDecoration(hintText: "Email"),
     );
 
-    final _passwordField = TextFormField(
+    final _passwordField = FlareTextFormField(
+      labelText: "Password",
+      obscureText: true,
       onSaved: (value) {
         password = value;
       },
@@ -89,18 +77,43 @@ class _SignInFormState extends State<SignInForm> {
         }
         return null;
       },
-      decoration: _inputFieldDecoration(hintText: "Password"),
-      obscureText: true,
     );
 
     final _signInButton = ElevatedButton(
-        onPressed: () {
-          if (_formKey.currentState.validate()) {
-            _formKey.currentState.save();
-            this.widget.onSubmit(email, password);
-          }
-        },
-        child: Text("Sign In"));
+        onPressed: _isLoading
+            ? null
+            : () {
+                FocusScope.of(context).unfocus();
+                if (_formKey.currentState.validate()) {
+                  setState(() {
+                    _isLoading = true;
+                  });
+                  _formKey.currentState.save();
+                  _authRepo
+                      .signIn(email: email, password: password)
+                      .then((success) {
+                    if (success) {
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => HomeScreen()));
+                    } else {
+                      final snackBar = SnackBar(
+                          content: Text(
+                              "Sorry, the credentials weren't correct. Please try again."),
+                          backgroundColor: Theme.of(context).errorColor);
+                      Scaffold.of(context).showSnackBar(snackBar);
+                      _formKey.currentState.reset();
+                      setState(() {
+                        _isLoading = false;
+                      });
+                    }
+                  });
+                }
+              },
+        child: _isLoading
+            ? FlareSizedCircularProgressIndicator(size: 16)
+            : Text("Sign In"));
 
     final _signUpInvitation = TextButton(
       onPressed: () {
@@ -114,19 +127,20 @@ class _SignInFormState extends State<SignInForm> {
     );
 
     return Form(
-        key: _formKey,
-        child: Padding(
-          padding: EdgeInsets.all(24),
-          child: Column(
-            children: <Widget>[
-              _emailField,
-              SizedBox(height: 8),
-              _passwordField,
-              SizedBox(height: 16),
-              _signInButton,
-              _signUpInvitation
-            ],
-          ),
-        ));
+      key: _formKey,
+      child: Padding(
+        padding: EdgeInsets.all(24),
+        child: Column(
+          children: <Widget>[
+            _emailField,
+            SizedBox(height: 16),
+            _passwordField,
+            SizedBox(height: 24),
+            _signInButton,
+            _signUpInvitation
+          ],
+        ),
+      ),
+    );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:online_tutorial/repos/auth.dart';
+import 'package:online_tutorial/screens/account_screen.dart';
 import 'package:online_tutorial/screens/my_notes.dart';
 import 'package:online_tutorial/screens/profileinfo/profile_info.dart';
 import 'package:online_tutorial/screens/sign_in_screen.dart';
@@ -99,7 +100,7 @@ class _DrawerComponentState extends State<DrawerComponent> {
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) {
-                    return ProfileInfo();
+                    return SettingsPage();
                   },
                 ),
               );
@@ -138,7 +139,7 @@ class _DrawerComponentState extends State<DrawerComponent> {
           InkWell(
             onTap: () {
               authRepo.signOut().then((value) {
-                Navigator.pushReplacement(context,
+                Navigator.of(context).pushReplacement(
                     MaterialPageRoute(builder: (context) => SignInScreen()));
               });
             },

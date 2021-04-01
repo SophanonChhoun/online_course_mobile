@@ -14,24 +14,19 @@ class AuthRepo {
       AuthResponseData authResponse =
           await compute(authResponseDataFromMap, response.body);
       await _saveCredentials(authResponse);
-      print("HelloBye");
+
       return true;
     } else {
       return false;
     }
   }
 
-  Future<bool> signUp(
-      {String name,
-      String email,
-      String password,
-      String passwordConfirmation}) async {
+  Future<bool> signUp({String name, String email, String password}) async {
     http.Response response = await http.post("$baseUrl/register", body: {
       'first_name': name.split(" ")[0] ?? null,
       'last_name': name.split(" ")[1] ?? null,
       'email': email,
       'password': password,
-      'password_confirmation': passwordConfirmation
     });
 
     if (response.statusCode == 200) {

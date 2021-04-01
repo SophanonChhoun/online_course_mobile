@@ -170,41 +170,40 @@ class _VideoContentState extends State<VideoContent> {
   }
 
   _buildOverviewContent() {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(
-            "Overview",
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 16.0,
-              color: Colors.grey,
+    return Container(
+      padding: EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              "Overview",
+              style: Theme.of(context).textTheme.headline2,
             ),
           ),
-        ),
-        Container(
-          margin: EdgeInsets.all(8),
-          height: 8,
-          width: MediaQuery.of(context).size.width * 0.8,
-          decoration: BoxDecoration(
-            color: Color(0xFF7a7b7d),
-            borderRadius: BorderRadius.circular(20),
+          Container(
+            margin: EdgeInsets.all(8),
+            height: 8,
+            width: MediaQuery.of(context).size.width * 0.9,
+            decoration: BoxDecoration(
+              color: Color(0xFF7a7b7d),
+              borderRadius: BorderRadius.circular(20),
+            ),
           ),
-        ),
-        Container(
-          padding: EdgeInsets.all(8),
-          child: OverviewItem(),
-        ),
-      ],
+          Container(
+            padding: EdgeInsets.all(8),
+            child: OverviewItem(),
+          ),
+        ],
+      ),
     );
   }
 
   OverviewItem() {
     return Text(
       lesson.videoContent ?? "",
-      textAlign: TextAlign.center,
-      style: TextStyle(color: Colors.black, fontSize: 16),
+      style: Theme.of(context).textTheme.bodyText1,
     );
   }
 
