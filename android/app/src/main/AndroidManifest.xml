@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.chhounsophanon.online_tutorial">
    <application
-        android:label="online_tutorial"
+        android:label="Flare"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

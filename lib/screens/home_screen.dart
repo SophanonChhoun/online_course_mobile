@@ -58,10 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: buildUserCourse,
-              ),
+              buildUserCourse,
               SizedBox(
                 height: 20,
               ),
@@ -168,51 +165,57 @@ class _HomeScreenState extends State<HomeScreen> {
             style: Theme.of(context).textTheme.headline1,
           ),
         ),
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: List.generate(_userCourse.length, (index) {
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  height: 20,
-                ),
-                Row(
-                  children: [
-                    InkWell(
-                      onTap: () {
-                        Navigator.of(context)
-                            .push(
-                          MaterialPageRoute(
-                            builder: (context) => CourseDetailScreen(
-                              id: _userCourse[index].id,
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: List.generate(_userCourse.length, (index) {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Row(
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          Navigator.of(context)
+                              .push(
+                            MaterialPageRoute(
+                              builder: (context) => CourseDetailScreen(
+                                id: _userCourse[index].id,
+                              ),
                             ),
-                          ),
-                        )
-                            .then((value) {
-                          setState(() {
-                            _userData = courseRepo.readDataUserCourse();
-                            _courseData = courseRepo.readDataAllCourse();
+                          )
+                              .then((value) {
+                            setState(() {
+                              _userData = courseRepo.readDataUserCourse();
+                              _courseData = courseRepo.readDataAllCourse();
+                            });
                           });
-                        });
-                      },
-                      child: CardComponent(
-                        width: (size.width / 2) - 40,
-                        height: 200,
-                        header_img: _userCourse[index].headerImg,
-                        title: _userCourse[index].title,
-                        lesson: _userCourse[index].numberOfLessons,
-                        duration: _userCourse[index].duration,
+                        },
+                        child: CardComponent(
+                          width: (size.width / 2) - 40,
+                          height: 200,
+                          header_img: _userCourse[index].headerImg,
+                          title: _userCourse[index].title,
+                          lesson: _userCourse[index].numberOfLessons,
+                          duration: _userCourse[index].duration,
+                        ),
                       ),
-                    ),
-                    SizedBox(
-                      width: 5,
-                    ),
-                  ],
-                ),
-              ],
-            );
-          }),
+                      SizedBox(
+                        width: 5,
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                ],
+              );
+            }),
+          ),
         ),
       ],
     );

@@ -53,7 +53,7 @@ class _CardComponentState extends State<CardComponent> {
                 ),
               ),
               SizedBox(
-                height: 20,
+                height: 10,
               ),
               Container(
                 transform: Matrix4.translationValues(0.0, -10, 0.0),
