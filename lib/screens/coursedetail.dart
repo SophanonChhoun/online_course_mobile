@@ -271,7 +271,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
                                   ),
                                 ),
                                 Container(
-                                  width: 300,
+                                  width: size.width - 150,
                                   child: Align(
                                     alignment: Alignment.centerLeft,
                                     child: Text(
