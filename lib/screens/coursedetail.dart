@@ -31,6 +31,20 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: _buildBody,
+      appBar: AppBar(
+        leading: Container(
+          child: IconButton(
+            onPressed: () {
+              print("Back Pressed");
+              Navigator.pop(context);
+            },
+            color: Colors.black,
+            //size: 24,
+            icon: Icon(Icons.arrow_back),
+          ),
+        ),
+        backgroundColor: Colors.transparent,
+      ),
     );
   }
 
@@ -72,16 +86,6 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                  child: IconButton(
-                onPressed: () {
-                  print("Back Pressed");
-                  Navigator.pop(context);
-                },
-                color: Colors.black,
-                //size: 24,
-                icon: Icon(Icons.arrow_back),
-              )),
               Container(
                 // margin: EdgeInsetsGeometry.infinity.
 

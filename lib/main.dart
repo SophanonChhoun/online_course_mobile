@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
   final primaryTextColor = Color(0xFF4A4E69);
   final captionColor = Color(0xFF8e9aaf);
   final primaryBackgroundColor = Color(0xFFFFFFFF);
-  final accentColor = Colors.red;
+  // final accentColor = Colors.red;
   final highlightColor = Color(0xFF02C39A);
   final secondaryColor = Color(0xFF8e9aaf);
   final brandColor = Color(0xFF6A00F4);
@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
           primaryColor: primaryColor,
           backgroundColor: primaryBackgroundColor,
-          accentColor: accentColor,
+          accentColor: brandColor,
           highlightColor: highlightColor,
           hintColor: captionColor,
           errorColor: negativeColor,
@@ -64,7 +64,8 @@ class MyApp extends StatelessWidget {
               subtitle2: GoogleFonts.lato(
                   textStyle: TextStyle(fontSize: 14, color: captionColor)),
               bodyText1: GoogleFonts.lato(
-                  textStyle: TextStyle(color: primaryTextColor, height: 1.6)),
+                  textStyle: TextStyle(
+                      color: primaryTextColor, height: 1.6, fontSize: 15)),
               bodyText2: GoogleFonts.lato(
                   textStyle: TextStyle(
                       fontSize: 14, color: primaryTextColor, height: 1.6)),

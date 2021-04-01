@@ -2,46 +2,37 @@ import 'package:online_tutorial/repos/auth.dart';
 import 'package:online_tutorial/screens/home_screen.dart';
 import 'package:online_tutorial/screens/sign_in_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:online_tutorial/widgets/flare_sized_circular_progress_indicator.dart';
+import 'package:online_tutorial/widgets/flare_text_form_field.dart';
 
 class SignUpView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: SafeArea(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            width: MediaQuery.of(context).size.width * 0.4,
-            child: Image(image: AssetImage('assets/images/flare_logo.png')),
+      backgroundColor: Theme.of(context).backgroundColor,
+      body: SafeArea(
+        child: Center(
+          child: ListView(
+            shrinkWrap: true,
+            children: [
+              Align(
+                alignment: Alignment.center,
+                child: Container(
+                  width: MediaQuery.of(context).size.width * 0.5,
+                  child:
+                      Image(image: AssetImage('assets/images/flare_logo.png')),
+                ),
+              ),
+              SignUpForm(),
+            ],
           ),
-          SignUpForm(
-            onSubmit: (name, email, password, passwordConfirmation) {
-              AuthRepo authRepo = AuthRepo();
-              authRepo
-                  .signUp(name: name, email: email, password: password)
-                  .then((value) {
-                if (value != null) {
-                  Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context) => HomeScreen()));
-                } else {
-                  print("Invalid sign up credentials");
-                }
-              });
-            },
-          )
-        ],
+        ),
       ),
-    ));
+    );
   }
 }
 
 class SignUpForm extends StatefulWidget {
-  final Function(String name, String email, String password,
-      String passwordConfirmation) onSubmit;
-
-  SignUpForm({this.onSubmit});
-
   @override
   _SignUpFormState createState() => _SignUpFormState();
 }
@@ -50,7 +41,8 @@ class _SignUpFormState extends State<SignUpForm> {
   String name;
   String email;
   String password;
-  String passwordConfirmation;
+  final _authRepo = AuthRepo();
+  bool _isLoading = false;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -63,24 +55,22 @@ class _SignUpFormState extends State<SignUpForm> {
 
   @override
   Widget build(BuildContext context) {
-    final _inputFieldBorderRadius = BorderRadius.all(Radius.circular(8));
+    final _nameField = FlareTextFormField(
+        labelText: "Name",
+        hintText: "Justin Bieber",
+        onSaved: (value) {
+          name = value;
+        },
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return "Please enter your name";
+          }
+          return null;
+        });
 
-    _inputFieldDecoration({String hintText = ""}) => InputDecoration(
-        contentPadding: EdgeInsets.only(left: 16, top: 4, right: 16, bottom: 4),
-        border: OutlineInputBorder(borderRadius: _inputFieldBorderRadius),
-        enabledBorder: OutlineInputBorder(
-            borderRadius: _inputFieldBorderRadius,
-            borderSide: BorderSide(color: Theme.of(context).hintColor)),
-        hintText: hintText);
-
-    final _nameField = TextFormField(
-      onSaved: (value) {
-        name = value;
-      },
-      decoration: _inputFieldDecoration(hintText: "Name"),
-    );
-
-    final _emailField = TextFormField(
+    final _emailField = FlareTextFormField(
+      labelText: "Email",
+      hintText: "justinbieber@gmail.com",
       onSaved: (value) {
         email = value;
       },
@@ -90,10 +80,12 @@ class _SignUpFormState extends State<SignUpForm> {
         }
         return null;
       },
-      decoration: _inputFieldDecoration(hintText: "Email"),
     );
 
-    final _passwordField = TextFormField(
+    final _passwordField = FlareTextFormField(
+      labelText: "Password",
+      hintText: "8 characters or more",
+      obscureText: true,
       onSaved: (value) {
         password = value;
       },
@@ -104,32 +96,39 @@ class _SignUpFormState extends State<SignUpForm> {
         }
         return null;
       },
-      decoration: _inputFieldDecoration(hintText: "Password"),
-      obscureText: true,
-    );
-
-    final _confirmPasswordField = TextFormField(
-      onSaved: (value) {
-        passwordConfirmation = value;
-      },
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return "Please enter a password confirmation";
-        }
-        return null;
-      },
-      decoration: _inputFieldDecoration(hintText: "Password confirmation"),
-      obscureText: true,
     );
 
     final _signUpButton = ElevatedButton(
         onPressed: () {
+          FocusScope.of(context).unfocus();
           if (_formKey.currentState.validate()) {
+            setState(() {
+              _isLoading = true;
+            });
             _formKey.currentState.save();
-            this.widget.onSubmit(name, email, password, passwordConfirmation);
+            _authRepo.signUp(name: name, email: email, password: password).then(
+              (success) {
+                if (success) {
+                  Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder: (context) => HomeScreen()));
+                } else {
+                  final snackBar = SnackBar(
+                      content: Text(
+                          "Sorry, the sign up wasn't successful. Please try a different email."),
+                      backgroundColor: Theme.of(context).errorColor);
+                  Scaffold.of(context).showSnackBar(snackBar);
+                  _formKey.currentState.reset();
+                  setState(() {
+                    _isLoading = false;
+                  });
+                }
+              },
+            );
           }
         },
-        child: Text("Sign Up"));
+        child: _isLoading
+            ? FlareSizedCircularProgressIndicator(size: 16)
+            : Text("Sign Up"));
 
     final _signInInvitation = TextButton(
       onPressed: () {
@@ -149,13 +148,11 @@ class _SignUpFormState extends State<SignUpForm> {
           child: Column(
             children: <Widget>[
               _nameField,
-              SizedBox(height: 8),
-              _emailField,
-              SizedBox(height: 8),
-              _passwordField,
-              SizedBox(height: 8),
-              _confirmPasswordField,
               SizedBox(height: 16),
+              _emailField,
+              SizedBox(height: 16),
+              _passwordField,
+              SizedBox(height: 24),
               _signUpButton,
               _signInInvitation
             ],
