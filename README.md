@@ -16,11 +16,12 @@ For help getting started with Flutter, view our
 samples, guidance on mobile development, and a full API reference.
 
 ## Contributor: 
+
 - Chhoun Sophanon
 - Hy Sothyrith
 - Leav Chandara
 - Chornrith Borey
 
-##Duration
+## Duration:
 
 We had built this project in two projects. During these two weeks, we have done a complete UI/UX, Backend, API and mobile app.
