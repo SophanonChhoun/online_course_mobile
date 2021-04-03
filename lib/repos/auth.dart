@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:online_tutorial/models/auth_response.dart';
 
 class AuthRepo {
-  final baseUrl = "http://192.168.1.168/api";
+  final baseUrl = "http://127.0.0.1:8000/api";
 
   Future<bool> signIn({String email, String password}) async {
     http.Response response = await http
