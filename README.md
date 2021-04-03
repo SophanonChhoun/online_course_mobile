@@ -14,3 +14,13 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter, view our
 [online documentation](https://flutter.dev/docs), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
+
+## Contributor: 
+- Chhoun Sophanon
+- Hy Sothyrith
+- Leav Chandara
+- Chornrith Borey
+
+##Duration
+
+We had built this project in two projects. During these two weeks, we have done a complete UI/UX, Backend, API and mobile app.
