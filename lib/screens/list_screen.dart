@@ -133,31 +133,34 @@ class _ListScreenState extends State<ListScreen> {
                   children: List.generate(_categories[index].courses.length,
                       (indexs) {
                     _courses = _categories[index].courses[indexs];
-                    return Row(
-                      children: [
-                        InkWell(
-                          onTap: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => CourseDetailScreen(
-                                  id: _courses.id,
+                    return Container(
+                      padding: EdgeInsets.symmetric(vertical: 10),
+                      child: Row(
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => CourseDetailScreen(
+                                    id: _courses.id,
+                                  ),
                                 ),
-                              ),
-                            );
-                          },
-                          child: CardComponent(
-                            header_img: _courses.headerImg,
-                            width: (size.width / 2) - 40,
-                            height: 200,
-                            title: _courses.title,
-                            lesson: _courses.numberOfLessons,
-                            duration: _courses.duration,
+                              );
+                            },
+                            child: CardComponent(
+                              header_img: _courses.headerImg,
+                              width: (size.width / 2) - 40,
+                              height: 200,
+                              title: _courses.title,
+                              lesson: _courses.numberOfLessons,
+                              duration: _courses.duration,
+                            ),
                           ),
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                      ],
+                          SizedBox(
+                            width: 10,
+                          ),
+                        ],
+                      ),
                     );
                   }),
                 ),

@@ -153,13 +153,15 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
             width: 75.0,
             height: 35.0,
             decoration: BoxDecoration(
-                color: Color(0xFF02C39A),
+                color: _course.enroll ? Colors.redAccent : Color(0xFF02C39A),
                 borderRadius: BorderRadius.circular(12.0)),
             child: Center(
               child: Text(
                 "${_course.enroll ? "Unenroll" : "Enroll"}",
-                style:
-                    TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
               ),
             ),
           ),
