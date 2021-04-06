@@ -27,7 +27,7 @@ class _EmailEditState extends State<EmailEdit> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.transparent,
         leading: IconButton(
           onPressed: () {
             print("Back Pressed");
