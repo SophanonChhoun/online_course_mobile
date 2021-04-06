@@ -53,7 +53,7 @@ class _ProfileInfoState extends State<ProfileInfo> {
 
   _buildAppBar() {
     return AppBar(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.transparent,
       leading: IconButton(
         onPressed: () {
           print("Back Pressed");

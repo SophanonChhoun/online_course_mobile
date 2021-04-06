@@ -1,5 +1,6 @@
 import 'package:online_tutorial/repos/auth.dart';
 import 'package:online_tutorial/screens/home_screen.dart';
+import 'package:online_tutorial/screens/landing_screen.dart';
 import 'package:online_tutorial/screens/sign_in_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:online_tutorial/widgets/flare_sized_circular_progress_indicator.dart';
@@ -110,7 +111,7 @@ class _SignUpFormState extends State<SignUpForm> {
               (success) {
                 if (success) {
                   Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context) => HomeScreen()));
+                      MaterialPageRoute(builder: (context) => Landing()));
                 } else {
                   final snackBar = SnackBar(
                       content: Text(
