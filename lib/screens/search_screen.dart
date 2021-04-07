@@ -7,29 +7,6 @@ import 'package:online_tutorial/repos/course_repos.dart';
 import 'coursedetail.dart';
 
 class DataSearch extends SearchDelegate<String> {
-  final statelist = [
-    'Andaman and Nicobar Islands',
-    '   Andhra Pradesh',
-    'Arunachal Pradesh',
-    'Assam',
-    'Bihar',
-    'Chandigarh ',
-    'Chhattisgarh',
-    'Dadra and Nagar Havel',
-    'Daman and Diu',
-    'Delhi',
-    'Goa',
-    'Gujrat',
-    'Haryana',
-    'Himachal Pradesh',
-    'Uttar Pradesh',
-    'Uttarakhand',
-    'West Bengal',
-    'Sikkim',
-    'Meghalya',
-    'Mizoram',
-  ];
-  final recentlist = ['Modingar', 'Ghaziabad', 'Merrut', 'Hapur', 'Delhi'];
   Future<CourseData> _data;
   Future<CourseData> _searchData;
   List<Course> _courseData;
@@ -81,12 +58,6 @@ class DataSearch extends SearchDelegate<String> {
   @override
   Widget buildSuggestions(BuildContext context) {
     // TODO: implement buildSuggestions
-    final suggestionList = query.isEmpty
-        ? recentlist
-        : statelist
-            .where((element) =>
-                element.toLowerCase().startsWith(query.toLowerCase()))
-            .toList();
     return _buildView(context);
   }
 
