@@ -121,18 +121,71 @@ class _HomeScreenState extends State<HomeScreen> {
           );
         }
         if (snapshot.connectionState == ConnectionState.done) {
-          // print(snapshot.data.success);
-          // print(snapshot.data.data[0].title);
           _userCourse = snapshot.data.data;
           if (_userCourse.length > 0) {
             return buildUserCourseRow();
           } else {
-            return Text("");
+            return SizedBox(
+              height: 0,
+            );
           }
         } else {
-          return Center(child: CircularProgressIndicator());
+          return buildWaitCourseUser();
         }
       },
+    );
+  }
+
+  buildWaitCourseUser() {
+    var size = MediaQuery.of(context).size;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          child: Text(
+            "Your courses",
+            style: Theme.of(context).textTheme.headline1,
+          ),
+        ),
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            children: List.generate(5, (index) {
+              return buildWaitCourse();
+            }),
+          ),
+        )
+      ],
+    );
+  }
+
+  buildWaitAllCourse() {
+    var size = MediaQuery.of(context).size;
+
+    return Wrap(
+      runSpacing: 20,
+      spacing: 10,
+      children: List.generate(10, (index) {
+        return buildWaitCourse();
+      }),
+    );
+  }
+
+  buildWaitCourse() {
+    var size = MediaQuery.of(context).size;
+    return Card(
+      shape: RoundedRectangleBorder(
+        side: BorderSide(color: Colors.white70, width: 1),
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Container(
+        width: (size.width / 2) - 40,
+        height: 200,
+        decoration: BoxDecoration(
+          color: Colors.grey.shade300,
+        ),
+      ),
     );
   }
 
@@ -147,7 +200,7 @@ class _HomeScreenState extends State<HomeScreen> {
           _course = snapshot.data.data;
           return buildCourse();
         } else {
-          return Center(child: CircularProgressIndicator());
+          return buildWaitAllCourse();
         }
       },
     );

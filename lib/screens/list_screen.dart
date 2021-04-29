@@ -96,16 +96,73 @@ class _ListScreenState extends State<ListScreen> {
           print("snapshot.error: ${snapshot.error}");
         }
         if (snapshot.connectionState == ConnectionState.done) {
-          // print(snapshot.data.success);
-          // print(snapshot.data.data[0].title);
-
           _categories = snapshot.data.data;
-          print(_categories[0].name);
           return _buildCategory();
         } else {
-          return Center(child: CircularProgressIndicator());
+          return buildWaitCategory();
         }
       },
+    );
+  }
+
+  buildWaitCategory() {
+    var size = MediaQuery.of(context).size;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: List.generate(5, (index) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "Flare Course",
+              style: Theme.of(context).textTheme.headline1,
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: List.generate(5, (indexs) {
+                  return Container(
+                    padding: EdgeInsets.symmetric(vertical: 10),
+                    child: Row(
+                      children: [
+                        buildWaitCourse(),
+                        SizedBox(
+                          width: 10,
+                        ),
+                      ],
+                    ),
+                  );
+                }),
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            )
+          ],
+        );
+      }),
+    );
+  }
+
+  buildWaitCourse() {
+    var size = MediaQuery.of(context).size;
+    return Card(
+      shape: RoundedRectangleBorder(
+        side: BorderSide(color: Colors.white70, width: 1),
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Container(
+        width: (size.width / 2) - 40,
+        height: 200,
+        decoration: BoxDecoration(
+          color: Colors.grey.shade300,
+        ),
+      ),
     );
   }
 
