@@ -52,7 +52,6 @@ class AuthRepo {
   }
 
   Future<bool> verifyExistingCredentials() async {
-    print("Here");
     final storage = new FlutterSecureStorage();
     String token = await storage.read(key: 'token');
     if (token == null) {

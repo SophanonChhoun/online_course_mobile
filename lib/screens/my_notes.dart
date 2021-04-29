@@ -78,7 +78,6 @@ class MyNotesView extends StatelessWidget {
             if (snapshot.connectionState == ConnectionState.done) {
               final List<NoteIndex> noteIndexes = snapshot.data.data;
               return _buildCourseNotes(noteIndexes);
-              return Text("Hello");
             } else {
               return Center(child: CircularProgressIndicator());
             }

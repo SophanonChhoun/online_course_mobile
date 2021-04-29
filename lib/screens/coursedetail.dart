@@ -35,7 +35,6 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
         leading: Container(
           child: IconButton(
             onPressed: () {
-              print("Back Pressed");
               Navigator.pop(context);
             },
             color: Colors.black,
